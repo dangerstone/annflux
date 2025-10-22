@@ -303,41 +303,39 @@ def init_folder(
 
     unseen_dataset_path = os.path.join(working_folder, "unseen_annflux_data.csv")
     unseen_data = None
-    if not os.path.exists(unseen_dataset_path):
-        if not os.path.exists(data_path):
-            make_images(images_path)
-
-            clean_filenames(images_path)
-            image_ids = [
-                os.path.splitext(x_)[0]
-                for x_ in os.listdir(images_path)
-                if x_.endswith(".jpg")
-            ]
+    
+    unseen_dataset_does_not_exist = not os.path.exists(unseen_dataset_path)
+    images_table_does_not_exist = not os.path.exists(data_path)
+    if unseen_dataset_does_not_exist or images_table_does_not_exist:
+        image_paths = []
+        image_ids = []
+        for root, _, files in os.walk(images_path):
+            for file in files:
+                if not file.endswith(".jpg"): continue
+                image_path = os.path.join(root, file) # .../images/nested1/nested2/image.jpg
+                #nested_path = os.path.relpath(image_path, images_path) # nested1/nested2/image.jpg
+                image_paths.append(image_path)
+                image_ids.append(os.path.splitext(file)[0]) # use only filename (without .jpg)
+        labels = ["0,1",]*len(image_ids)
+        
+        if images_table_does_not_exist:
             images_table = pandas.DataFrame(
-                data=zip(
-                    image_ids,
-                    [
-                        "0,1",
-                    ]
-                    * len(image_ids),
-                ),
+                data=zip(image_ids,labels,),
                 columns=[id_column, label_column_for_unseen],
             )
             images_table.to_csv(data_path, index=False)
-
-        unseen_data = pandas.read_csv(data_path, dtype={id_column: str})
-        unseen_data[id_column] = unseen_data[id_column].str.replace("-", "_")
-        unseen_data[id_column] = unseen_data[id_column].apply(
-            lambda x_: x_.replace(":", "_").replace(".", "_")
-        )
-        unseen_data["filename"] = unseen_data[id_column].apply(
-            lambda x_: os.path.join(images_path, x_ + ".jpg")
-        )
-        unseen_data["set"] = None
-        unseen_data["uid"] = unseen_data[id_column]
-        unseen_data["label"] = unseen_data[label_column_for_unseen]
-        unseen_data["record_id"] = unseen_data[id_column].apply(lambda x_: x_ + "R")
-        unseen_data.to_csv(unseen_dataset_path, index=False)
+        
+        if unseen_dataset_does_not_exist:
+            unseen_data = pandas.DataFrame(
+                data=zip(image_ids,labels,image_paths),
+                columns=[id_column, label_column_for_unseen,"filename"],
+            )
+            unseen_data["set"] = None
+            unseen_data["uid"] = unseen_data[id_column]
+            unseen_data["label"] = unseen_data[label_column_for_unseen]
+            unseen_data["record_id"] = unseen_data[id_column].apply(lambda x_: x_ + "R")
+            unseen_data.to_csv(unseen_dataset_path, index=False)
+    
     taxon_mapping_path = os.path.join(source.working_folder, "taxon_mapping.csv")
     if not os.path.exists(taxon_mapping_path):
         ids = [str(x_) for x_ in range(1000)]
