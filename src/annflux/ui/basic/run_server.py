@@ -162,8 +162,14 @@ def data_get():
 
 @app.route("/images/thumbnail/<uid>")
 def thumbnail(uid):
-    """ """
-    thumb_path = os.path.join(images_path, f"{uid}.jpg")
+    """ Looks up image for given uid """
+    # Read images table
+    annflux_table_path = os.path.join(g_state.data_folder, "annflux", "annflux.csv")
+    annflux_table = pandas.read_csv(annflux_table_path, dtype={"uid": str})
+    # Look up filename for that uid
+    row = annflux_table[annflux_table["uid"] == uid] # NOTE currently do not check that the csv table exists and we assume the uid column exists and has a single match
+    filename = row.iloc[0]["filename"]
+    thumb_path = os.path.join(images_path, filename)
     if os.path.exists(thumb_path):
         return send_file(thumb_path, mimetype="image/jpg", as_attachment=False)
 

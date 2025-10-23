@@ -203,6 +203,11 @@ def train(
         for x_ in annotations.keys()
         if len(set(annotations[x_].split(",")).intersection(unique_labels)) > 0
     ]
+    # FIXME this is old code duplication from how unseen_data aws made from the images.csv (at data_path), 
+    # but is now incorrect, because it builds the filenames from image_ids and renames the ids to remove ":" etc.
+    # We should instead just read the data_path directly, as it now contains the correct filenames and avoid 
+    # renaming/rebuilding names and paths in the code like this, which is error-prone (or at least use a single 
+    # helper function to do so consistently)
     seen_data = pandas.read_csv(data_path, dtype={id_column: str})
     seen_data[id_column] = seen_data[id_column].apply(
         lambda x_: x_.replace(":", "_")
@@ -311,25 +316,22 @@ def init_folder(
         image_ids = []
         for root, _, files in os.walk(images_path):
             for file in files:
-                if not file.endswith(".jpg"): continue
+                if not file.endswith(".jpg"): continue # NOTE only supporting .jpg for now
                 image_path = os.path.join(root, file) # .../images/nested1/nested2/image.jpg
-                #nested_path = os.path.relpath(image_path, images_path) # nested1/nested2/image.jpg
+                # nested_path = os.path.relpath(image_path, images_path) # nested1/nested2/image.jpg
                 image_paths.append(image_path)
                 image_ids.append(os.path.splitext(file)[0]) # use only filename (without .jpg)
         labels = ["0,1",]*len(image_ids)
         
         if images_table_does_not_exist:
             images_table = pandas.DataFrame(
-                data=zip(image_ids,labels,),
-                columns=[id_column, label_column_for_unseen],
+                data=zip(image_ids,labels,image_paths), 
+                columns=[id_column, label_column_for_unseen, "filename"], # TODO define "filename" column name somewhere like id_column to ensure consistency
             )
             images_table.to_csv(data_path, index=False)
         
         if unseen_dataset_does_not_exist:
-            unseen_data = pandas.DataFrame(
-                data=zip(image_ids,labels,image_paths),
-                columns=[id_column, label_column_for_unseen,"filename"],
-            )
+            unseen_data = pandas.read_csv(data_path, dtype={id_column: str})
             unseen_data["set"] = None
             unseen_data["uid"] = unseen_data[id_column]
             unseen_data["label"] = unseen_data[label_column_for_unseen]
