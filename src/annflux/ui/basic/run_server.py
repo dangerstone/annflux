@@ -165,7 +165,7 @@ def thumbnail(uid):
     """ Looks up image for given uid """
     # Read images table
     annflux_table_path = os.path.join(g_state.data_folder, "annflux", "annflux.csv")
-    annflux_table = pandas.read_csv(annflux_table_path, dtype={"uid": str, "filename": str})
+    annflux_table = pandas.read_csv(annflux_table_path, dtype={"uid": str, "filename": str}, low_memory=False)
     # Look up filename for that uid
     row = annflux_table[annflux_table["uid"] == uid] # NOTE currently do not check that the csv table exists and we assume the uid column exists and has a single match
     filename = row.iloc[0]["filename"]
