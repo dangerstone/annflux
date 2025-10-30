@@ -527,20 +527,21 @@ def general_server_error(e):
     return standard_json_response("general_server_error", None, 500)
 
 
-def ui_script_entry():
+def ui_script_entry(project_root=None):
     os.environ["PROJECT_ROOT"] = (
-        os.path.expanduser(sys.argv[1])
-        if os.getenv("PROJECT_ROOT") is None
-        else os.getenv("PROJECT_ROOT")
+        # Returns the first truthy value it finds. If everything is falsy, it returns the last one.
+        project_root
+        or os.getenv("PROJECT_ROOT")
+        or (os.path.expanduser(sys.argv[1]) if len(sys.argv) > 1 else None)
     )
     _init()
-    app.run(
-        debug=str2bool(os.getenv("APP_DEBUG", False)),
-        host="0.0.0.0",
-        threaded=True,
-        port=int(os.getenv("PORT", "8006")),
-    )
-
+    return app
 
 if __name__ == "__main__":
     ui_script_entry()
+    app.run(
+        debug=str2bool(os.getenv("APP_DEBUG", False)),
+        host='127.0.0.1', # host="0.0.0.0",
+        threaded=True,
+        port=int(os.getenv("PORT", "8006")),
+    )
