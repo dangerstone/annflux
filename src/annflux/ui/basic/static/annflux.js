@@ -41,7 +41,7 @@ function addDots(data, x, y, color_by, transform, width, height) {
             return d.color_prob;
         })
         .style("stroke-width", function (d) {
-            return (d.labeled == 0 ? 2 * (1 - d.score_predicted) : 2) / k;
+            return 0;//(d.labeled == 0 ? 2 * (1 - d.score_predicted) : 2) / k;
         });
 }
 

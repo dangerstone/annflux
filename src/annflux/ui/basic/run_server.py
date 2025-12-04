@@ -449,6 +449,7 @@ def status():
                     g_state.train_thread = threading.Thread(
                         target=retrain_job, args=(g_state,)
                     )
+                    print("Starting thread for retraining.")
                     g_state.train_thread.start()
                     pass
     #
@@ -526,6 +527,9 @@ def general_server_error(e):
     logger.debug(e)
     return standard_json_response("general_server_error", None, 500)
 
+@app.route("/ping")
+def ping():
+    return f"Hello from {os.getenv('PROJECT_ROOT')} on port {os.getenv('PORT')}"
 
 def ui_script_entry(project_root=None):
     os.environ["PROJECT_ROOT"] = (
@@ -543,5 +547,5 @@ if __name__ == "__main__":
         debug=str2bool(os.getenv("APP_DEBUG", False)),
         host='127.0.0.1', # host="0.0.0.0",
         threaded=True,
-        port=int(os.getenv("PORT", "8006")),
+        port=int(os.getenv("PORT", "8008")),
     )

@@ -695,6 +695,7 @@ limitations under the License.
   }
 
   function refresh() {
+    return;
     $("#loading_circle").toggle();
     $.post("/label", JSON.stringify(Object.fromEntries(new Map())))
       .done(function (data) {
