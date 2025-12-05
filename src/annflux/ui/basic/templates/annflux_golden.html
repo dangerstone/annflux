@@ -119,10 +119,10 @@ limitations under the License.
       <a href="#" onclick="$('#fullscreen').hide();">x</a>
     </div>
       <a href="#" onclick="submitLabeledGallery(this)"
-        >Save all labels/images</a
+        >Submit labels</a
       >
-      <a href="#" onclick="refresh(this)">Refresh</a>
-      <a href="#" onclick="deselectGallery(this)">Deselect</a>
+      <a href="#" onclick="massClearLabelInGallery()">Clear labels from selection</a>
+      <a href="#" onclick="deselectGallery(this)">Deselect / (de)select all</a>
       <a href="#" onclick="highlightGalleryInMap(this)">Highlight gallery</a>
     </div>
     `);
@@ -581,7 +581,7 @@ limitations under the License.
     //
     setLabeledGlobal();
     console.log(gLabeled);
-    console.log("here", JSON.stringify(Object.fromEntries(gLabeled)));
+    console.log("labeled:", JSON.stringify(Object.fromEntries(gLabeled)));
     localStorage.setItem(
       "labeled",
       JSON.stringify(Object.fromEntries(gLabeled))
@@ -1128,6 +1128,23 @@ limitations under the License.
       [],
       true
     );
+    console.log("here", JSON.stringify(Object.fromEntries(gLabeled)));
+  }
+
+  function massClearLabelInGallery() {
+    console.log("massClearLabelInGallery - selection", gallerySelection);
+    for (const uid of gallerySelection) {
+      $("#gallery-label-" + uid).attr("data", "");
+      d2 = d3.select("#gallery-" + uid).data()[0];
+      createQuickLabel(
+        d2.uid,
+        d2.labeled == 0 ? "quick_label_predicted" : "quick_label_true",
+        [],
+        true
+      );
+      // d3.select("div.gallery#gallery-" + uid).style("outline", "");
+    }
+    console.log("here", JSON.stringify(Object.fromEntries(gLabeled)));
   }
 
   function deselectGallery() {
