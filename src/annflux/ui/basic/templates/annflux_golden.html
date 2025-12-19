@@ -93,20 +93,20 @@ limitations under the License.
     if (componentState.label == "B") {
       labelContainer = container;
       container.getElement().html(`<div id="panel">
-      <span id="labelPanel"><b style="color: red">Add labels first!</b></span>
-      <br/><a class="noButton" href="#" onclick="persistentToggle('addLabelPanel')"><img src="/static/newlabel.svg" width="24px"></a>
-      <div id="addLabelPanel">
-        <a href="javascript:void(0)" onclick="setLabelParent(null)">+</a>
-        <input type="text" id="newLabel" /><-<input
-          type="text"
-          id="parentLabel"
-          value="null"
-        />
-        <input type="button" value="add" onclick="addLabel()" />
-        <a href="/exclusivity">Exclusivity</a>
-        <a href="/label_provider">Label provider</a>
-      </div>
-    </div>`);
+          <span id="labelPanel"><b style="color: red">Add labels first!</b></span>
+          <br/><a class="noButton" href="#" onclick="persistentToggle('addLabelPanel')"><img src="/static/newlabel.svg" width="24px"></a>
+          <div id="addLabelPanel">
+            <a href="javascript:void(0)" onclick="setLabelParent(null)">+</a>
+            <input type="text" id="newLabel" /><-<input
+              type="text"
+              id="parentLabel"
+              value="null"
+            />
+            <input type="button" value="add" onclick="addLabel()" />
+            <a href="/exclusivity">Exclusivity</a>
+            <a href="/label_provider">Label provider</a>
+          </div>
+        </div>`);
     }
   });
   myLayout.registerComponent("Gallery", function (container, componentState) {
