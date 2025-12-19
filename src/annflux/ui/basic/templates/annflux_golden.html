@@ -75,7 +75,7 @@ limitations under the License.
   function saveState() {
     var state = JSON.stringify(myLayout.toConfig());
     localStorage.setItem("savedState", state);
-    location.reload();
+    // location.reload();
   }
 
   function persistentToggle(elID) {
@@ -729,7 +729,7 @@ limitations under the License.
   $(document).ready(function () {
     $.get("/performance", function (data) {
       renderPerformance(data);
-    });
+    });    
     $.get("/label_defs", function (data) {
       g_labels = data["labels"];
       g_labels.sort((a,b) => a[0].localeCompare(b[0]));
@@ -786,7 +786,7 @@ limitations under the License.
       if (g_labels.length > 0) {
         d3.select("#labelPanel").selectAll("*").remove();
       }
-
+      
       d3.select("#labelPanel")
         .selectAll("a")
         .data(g_labels)
