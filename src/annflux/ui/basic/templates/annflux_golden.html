@@ -1213,10 +1213,33 @@ limitations under the License.
       url: "/label_defs",
       type: "PUT",
       success: function (response) {
-        location.reload();
+        // location.reload();
+        // JUST REFRESH LABEL PANEL STUFF, not entire page
+        // this is to avoid losing current state (zoom, selection, etc)
+        // this is code duplication, not ideal, but quick solution
+        $.get("/label_defs", function (data) {
+          g_labels = data["labels"];
+          g_labels.sort((a,b) => a[0].localeCompare(b[0]));
+          d3.select("#labelPanel").selectAll("*").remove();
+          d3.select("#labelPanel")
+            .selectAll("a")
+            .data(g_labels)
+            .enter()
+            .append("a")
+            .attr("onclick", "labelDelegate(this)")
+            .attr("href", "javascript:void(0)")
+            .attr("class", "label_panel")
+            .attr("id", function (d) {
+              return `label_panel_${d[0].replace(" ", "_")}`;
+            })
+            .html(function (d) {
+              return d[0];
+            });
+        });
+        
       },
       data: JSON.stringify([newLabel, $("#parentLabel").val()]),
-    });
+    });    
   }
 
   function setLabelParent(val) {
