@@ -174,8 +174,17 @@ body {
 
   .label_panel {
     background-color: orange;
-    display: block;
+    display: inline-block;
     margin-bottom: 2px;
+    padding: 2px 4px;
   }
-
+  #labelPanel { /* labels panel */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }  
+  #panel { /* labels panel incl. addLabel */
+    height: 100%;
+    overflow-y: auto;
+  }
   
