@@ -69,9 +69,21 @@ var labelConfig = {
               type: "component",
               componentName: "Control",
               componentState: { label: "D" },
-              height: 30,
+              height: 20,
             },
           ],
+          width: 50,
+        },
+        {
+          type: "column",
+          content: [
+            {
+              type: "component",
+              componentName: "Gallery",
+              componentState: { label: "C" },
+            },
+          ],
+          width: 40
         },
         {
           type: "column",
@@ -80,14 +92,9 @@ var labelConfig = {
               type: "component",
               componentName: "Labels",
               componentState: { label: "B" },
-              height: 10,
-            },
-            {
-              type: "component",
-              componentName: "Gallery",
-              componentState: { label: "C" },
             },
           ],
+          width: 10,
         },
       ],
     },
