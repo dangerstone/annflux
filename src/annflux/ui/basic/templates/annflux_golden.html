@@ -732,6 +732,7 @@ limitations under the License.
     });
     $.get("/label_defs", function (data) {
       g_labels = data["labels"];
+      g_labels.sort((a,b) => a[0].localeCompare(b[0]));
 
       for (const label of g_labels) {
         if (label[1] != "null") {
