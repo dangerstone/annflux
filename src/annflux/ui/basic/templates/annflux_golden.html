@@ -1387,10 +1387,10 @@ limitations under the License.
         return inside;
       };
 
-      function drawPath() {
+      function drawPath(k) {
         d3.select("#lasso")
           .style("stroke", "white")
-          .style("stroke-width", 2)
+          .style("stroke-width", 2/k)
           .style("fill", "#00000054")
           .attr("d", lineGenerator(coords));
       }
@@ -1417,7 +1417,7 @@ limitations under the License.
         mouseX = (mouseX - Tx) / k;
         mouseY = (mouseY - Ty) / k;
         coords.push([mouseX, mouseY]);
-        drawPath();
+        drawPath(k);
       }
 
       function dragEnd() {
