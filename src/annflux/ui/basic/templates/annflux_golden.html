@@ -113,14 +113,14 @@ limitations under the License.
             <img src="" style="max-width: 100%" />
             <a href="#" onclick="$('#fullscreen').hide();">x</a>
           </div>
-            <a href="#" onclick="submitLabeledGallery(this)"
-              >Submit labels</a
-            >
+          <div class="gallery-buttons">
+            <a href="#" onclick="submitLabeledGallery(this)">Submit labels</a>
             <a href="#" onclick="massClearLabelInGallery()">Clear labels from selection</a>
             <a href="#" onclick="deselectGallery(this)">Deselect / (de)select all</a>
             <a href="#" onclick="highlightGalleryInMap(this)">Highlight gallery</a>
-            <br style="margin-bottom: 10px;" />
-          </div>`);
+          </div>
+          <br style="margin-bottom: 10px;" />
+        </div>`);
     }
   });
   myLayout.registerComponent("Control", function (container, componentState) {

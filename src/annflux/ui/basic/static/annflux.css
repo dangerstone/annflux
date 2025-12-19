@@ -187,4 +187,12 @@ body {
     height: 100%;
     overflow-y: auto;
   }
+
+  .gallery-buttons {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    padding: 5px;
+    background-color: black;
+  }
   
