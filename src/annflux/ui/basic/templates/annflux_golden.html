@@ -109,18 +109,18 @@ limitations under the License.
       galleryContainer = container;
       container.getElement()
         .html(`<div id="gallery" tabindex="0" style="position:relative">
-    <div id="fullscreen" style="position: absolute; max-width: 50%; display:none">
-      <img src="" style="max-width: 100%" />
-      <a href="#" onclick="$('#fullscreen').hide();">x</a>
-    </div>
-      <a href="#" onclick="submitLabeledGallery(this)"
-        >Submit labels</a
-      >
-      <a href="#" onclick="massClearLabelInGallery()">Clear labels from selection</a>
-      <a href="#" onclick="deselectGallery(this)">Deselect / (de)select all</a>
-      <a href="#" onclick="highlightGalleryInMap(this)">Highlight gallery</a>
-    </div>
-    `);
+          <div id="fullscreen" style="position: absolute; max-width: 50%; display:none">
+            <img src="" style="max-width: 100%" />
+            <a href="#" onclick="$('#fullscreen').hide();">x</a>
+          </div>
+            <a href="#" onclick="submitLabeledGallery(this)"
+              >Submit labels</a
+            >
+            <a href="#" onclick="massClearLabelInGallery()">Clear labels from selection</a>
+            <a href="#" onclick="deselectGallery(this)">Deselect / (de)select all</a>
+            <a href="#" onclick="highlightGalleryInMap(this)">Highlight gallery</a>
+            <br style="margin-bottom: 10px;" />
+          </div>`);
     }
   });
   myLayout.registerComponent("Control", function (container, componentState) {
